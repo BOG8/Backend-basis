@@ -5,4 +5,10 @@ sudo: false
 addons:
   apt:
     packages:
-      - oracle-java8-installer
+    - oracle-java8-installer
+deploy:
+  api_key:
+    secure: ivG1lC7XtZnDi6ienYiEvgfA5A3WHe43x2hvmt4YMg2igMpLVCfY332tXULDFz4QzDRjOCroizl5uCJ9C5zgQoskRen3ouyXuVCInBh0luRNWWWY8wh28QzitnD4D4X/3k9kJmXDm0Ur7zFXOunPwtQr0odul1FGEUCKv3pIOncFUxi3zPBjhkzH2vYH+LaadhFjYiv9Dt7g5++td7Pr08YxOrECo0tnH9usQPSMjwsZZMqdSbl/pKy+lVFLd6JIjOPso6XQ/2dD9+gheZAZ2LwcFz8AM1Mzs33sIJio09GB+kva/mSZcHN7PICiR4zPH9BgunQPz+x08jWt20NsPYib6xC1YAePIZQo0+bSPOZQYdgikCm37qoWk2nxNffjo648yRul9fC1Qp60XHHhuUeHdJZtbAKhmSnerv8TcwO40Iyn1DXQRW9cPdV7h9pzu01RxXDLP/Psxd7pV3JHubAg3D0Qp2+eEEpmk30OtyqeruUP5kalMV5X42JMdfLHhQZB7eeCkkKTRY1NNtdtPz1GU0SAmbRSmaN/LPndH7/65Bpm81giDZ69eFXtAyDKF8bZ+YPA84jUkcOLwp90F6hdqpbQr/LTjsWlwx+he2+I+9YDrnFxPeNrZXKvM8/Jm1jfwP0SQfjjCT2G3dcjl5iudQoXqWyv+wr/fh928Ls=
+  app:
+    master: backend-basis
+    production: backend-basis-dev
