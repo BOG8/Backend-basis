@@ -16,4 +16,8 @@ public class UserService {
         this.userDAO = userDAO;
     }
 
+    public UserModel registration(UserModel user) {
+        return userDAO.registration(user);
+    }
+
 }
