@@ -31,4 +31,8 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("{}");
     }
+
+    public Long getUserId(UserModel user) {
+        return userService.getUserId(user);
+    }
 }

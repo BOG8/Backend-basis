@@ -10,6 +10,19 @@ public class UserModel {
     private String password;
     private String email;
 
+    public UserModel() {
+
+    }
+
+    public UserModel(Long id, String password) {
+        this.id = id;
+        this.password = password;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
     public String getLogin() {
         return login;
     }

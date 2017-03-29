@@ -1,5 +1,6 @@
 package ru.bog;
 
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
@@ -20,8 +21,8 @@ public class UserDAO {
         this.dataSource = dataSource;
     }
 
+    @Nullable
     public UserModel registration(UserModel user) {
-
         final Connection connection = DataSourceUtils.getConnection(dataSource);
         final String query = "INSERT INTO users(login, password, email) VALUES (?, ?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(query,
@@ -39,5 +40,20 @@ public class UserDAO {
         }
 
         return user;
+    }
+
+    @Nullable
+    public UserModel getIdByLogin(String login) {
+        final Connection connection = DataSourceUtils.getConnection(dataSource);
+        final String query = "SELECT id, password FROM users WHERE login = ?";
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, login);
+            try (ResultSet resultSet = ps.executeQuery()) {
+                resultSet.next();
+                return new UserModel(resultSet.getLong("id"), resultSet.getString("password"));
+            }
+        } catch (SQLException e) {
+            return null;
+        }
     }
 }
