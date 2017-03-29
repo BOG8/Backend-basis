@@ -34,6 +34,6 @@ public class SessionController {
             return ResponseEntity.ok(idResponse);
         }
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{}");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("{}");
     }
 }
