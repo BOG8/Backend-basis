@@ -43,7 +43,7 @@ public class ControllerTest {
     @Test
     public void testDuplicateRegister() throws Exception {
         mockMvc.perform(post("/api/user")
-                .content("{\"login\":\"testLogin\",\"password\":\"passTest\",\"email\": \"noTest@mail.ru\"}")
+                .content("{\"login\":\"noTestLogin\",\"password\":\"passTest\",\"email\": \"noTest@mail.ru\"}")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden());
     }
