@@ -36,4 +36,17 @@ public class SessionController {
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("{}");
     }
+
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity authorization(HttpSession httpSession) {
+        final Object object = httpSession.getAttribute(USER_ID);
+        if (object instanceof Long) {
+            final Long userId = (Long) object;
+            final IdResponse idResponse = new IdResponse(userId);
+            return ResponseEntity.ok(idResponse);
+        }
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{}");
+    }
 }
