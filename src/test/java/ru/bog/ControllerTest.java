@@ -47,5 +47,35 @@ public class ControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden());
     }
-    
+    @Test
+    public void testFailLogin() throws Exception {
+        mockMvc.perform(post("/api/session")
+                .content("{\"login\":\"testLogin\",\"password\":\"noTestPass\"}")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden());
+    }
+
+   @Test
+    public void testLogin() throws Exception {
+        mockMvc.perform(post("/api/session")
+                .content("{\"login\":\"testLogin\",\"password\":\"testPass\"}")
+                .contentType(MediaType.APPLICATION_JSON)
+                .session(mockHttpSession))
+                .andExpect(status().isOk());
+    }
+
+   @Test
+    public void testAuth() throws Exception {
+        testLogin();
+        mockMvc.perform(get("/api/session")
+                .session(mockHttpSession))
+                .andExpect(status().isOk());
+    }
+
+   @Test
+    public void testFailAuth() throws Exception {
+        mockMvc.perform(get("/api/session")
+                .session(mockHttpSession))
+                .andExpect(status().isUnauthorized());
+    }
 }
