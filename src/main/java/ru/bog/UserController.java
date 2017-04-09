@@ -1,12 +1,14 @@
 package ru.bog;
 
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
+
+import static ru.bog.SessionController.USER_ID;
 
 /**
  * Created by zac on 21.03.17.
@@ -32,7 +34,22 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("{}");
     }
 
+    @Nullable
     public Long getUserId(UserModel user) {
         return userService.getUserId(user);
+    }
+
+    @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
+    public ResponseEntity getUserInfo(@PathVariable long userId, HttpSession httpSession) {
+        final Object object = httpSession.getAttribute(USER_ID);
+        if (!(object instanceof Long)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{}");
+        }
+        final NoPassUserModel user = userService.getUserInfo(userId);
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{}");
     }
 }

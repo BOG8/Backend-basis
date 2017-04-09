@@ -56,4 +56,19 @@ public class UserDAO {
             return null;
         }
     }
+
+    @Nullable
+    public NoPassUserModel getUserInfo(long userId) {
+        final Connection connection = DataSourceUtils.getConnection(dataSource);
+        final String query = "SELECT id, login, email FROM Users WHERE id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setLong(1, userId);
+            try (ResultSet resultSet = ps.executeQuery()) {
+                resultSet.next();
+                return new NoPassUserModel(resultSet);
+            }
+        } catch (SQLException e) {
+            return null;
+        }
+    }
 }

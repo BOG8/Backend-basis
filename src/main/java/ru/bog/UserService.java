@@ -41,4 +41,9 @@ public class UserService {
         return null;
     }
 
+    @Nullable
+    public NoPassUserModel getUserInfo(long userId) {
+        return userDAO.getUserInfo(userId);
+    }
+
 }
