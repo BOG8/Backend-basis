@@ -49,4 +49,11 @@ public class SessionController {
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{}");
     }
+
+    @RequestMapping(method = RequestMethod.DELETE)
+    public String logout(HttpSession httpSession) {
+        httpSession.removeAttribute(USER_ID);
+
+        return "{}";
+    }
 }
