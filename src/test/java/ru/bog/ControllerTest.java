@@ -47,6 +47,7 @@ public class ControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden());
     }
+
     @Test
     public void testFailLogin() throws Exception {
         mockMvc.perform(post("/api/session")
