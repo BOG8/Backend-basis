@@ -52,4 +52,34 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{}");
     }
+
+    @RequestMapping(value = "/{userId}", method = RequestMethod.DELETE)
+    public ResponseEntity deleteUser(@PathVariable long userId, HttpSession httpSession) {
+        final Object object = httpSession.getAttribute(USER_ID);
+        if (!(object instanceof Long)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{}");
+        }
+        if (idCheck(object, userId) != Status.OK) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("{}");
+        }
+        if (userService.deleteUser(userId) == Status.OK) {
+            httpSession.removeAttribute(USER_ID);
+            return ResponseEntity.ok("{}");
+        }
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("{}");
+    }
+
+    private static int idCheck(Object object, long userId) {
+        if (object instanceof Long) {
+            final Long sessionUserId = (Long) object;
+            if (sessionUserId != userId) {
+                return Status.ERROR;
+            }
+        } else {
+            return Status.ERROR;
+        }
+
+        return Status.OK;
+    }
 }

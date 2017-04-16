@@ -60,7 +60,7 @@ public class UserDAO {
     @Nullable
     public NoPassUserModel getUserInfo(long userId) {
         final Connection connection = DataSourceUtils.getConnection(dataSource);
-        final String query = "SELECT id, login, email FROM Users WHERE id = ?";
+        final String query = "SELECT id, login, email FROM users WHERE id = ?";
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setLong(1, userId);
             try (ResultSet resultSet = ps.executeQuery()) {
@@ -70,5 +70,18 @@ public class UserDAO {
         } catch (SQLException e) {
             return null;
         }
+    }
+
+    public int deleteUser(long userId) {
+        final Connection connection = DataSourceUtils.getConnection(dataSource);
+        final String query = "DELETE FROM users WHERE id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setLong(1, userId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            return Status.ERROR;
+        }
+
+        return Status.OK;
     }
 }
