@@ -26,9 +26,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 public class ControllerTest {
     public MockHttpSession mockHttpSession;
+    private Long userID;
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private UserController userController;
 
     @Before
     public void setup() throws Exception {
@@ -38,6 +42,11 @@ public class ControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .session(mockHttpSession))
                 .andExpect(status().isOk());
+        UserModel user = new UserModel();
+        user.setLogin("testLogin");
+        user.setPassword("testPass");
+        userID = userController.getUserId(user);
+
     }
 
     @Test
@@ -76,6 +85,39 @@ public class ControllerTest {
    @Test
     public void testFailAuth() throws Exception {
         mockMvc.perform(get("/api/session")
+                .session(mockHttpSession))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void testLogout() throws Exception {
+        mockMvc.perform(delete("/api/session")
+                .session(mockHttpSession))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testLoginThenLogout() throws Exception {
+        testLogin();
+        testLogout();
+        testFailAuth();
+    }
+
+    @Test
+    public void testCheckInfo() throws Exception {
+        testLogin();
+        mockMvc.perform(get("/api/user/" + userID)
+                .content("{\"login\":\"testLogin\",\"password\":\"testPass\"}")
+                .contentType(MediaType.APPLICATION_JSON)
+                .session(mockHttpSession))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testFailCheckInfo() throws Exception {
+        mockMvc.perform(get("/api/user/" + userID)
+                .content("{\"login\":\"testLogin\",\"password\":\"testPass\"}")
+                .contentType(MediaType.APPLICATION_JSON)
                 .session(mockHttpSession))
                 .andExpect(status().isUnauthorized());
     }
